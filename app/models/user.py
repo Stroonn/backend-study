@@ -1,9 +1,11 @@
+from dataclasses import dataclass
 
+@dataclass
 class User:
 
-    def __init__(self, name:str, email:str):
-        self.name = name
-        self.email = email
+    name : str
+    email : str
 
-    def __repr__(self):
-        return f"User(name = {self.name}, email = {self.email})"
+    def __post_init__(self):
+        if not self.name:
+            raise ValueError("Name cannot be empty")
