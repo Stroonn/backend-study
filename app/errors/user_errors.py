@@ -1,11 +1,15 @@
-class EmptyUsernameError(Exception):
+class UserError(Exception):
+    """Base class for user-related errors"""
     pass
 
-class EmptyEmailError(Exception):
+class EmptyUsernameError(UserError):
     pass
 
-class InvalidEmailError(Exception):
+class EmptyEmailError(UserError):
     pass
 
-class UserDuplicateError(Exception):
+class InvalidEmailError(UserError):
+    pass
+
+class UserDuplicateError(UserError):
     pass

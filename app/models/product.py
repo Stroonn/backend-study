@@ -12,6 +12,6 @@ class Product:
         if not self.name:
             raise EmptyNameError("Name cannot be empty")
         if self.amount <= 0:
-            raise InvalidAmountError("Amount cannot be negative")
-        if self.price <= 0:
+            raise InvalidAmountError("Amount must be positive")
+        if self.price < 0:
             raise InvalidPriceError("Price cannot be negative")

@@ -14,10 +14,10 @@ def main():
     p_service = ProductService()
     try:
         product = p_service.create_product("Glass", "Blue glass", 10, -50)
+        product.price = format_price(product.price)
+        print(product)
     except ProductError as e:
         print(f"Error: {e}")
-    product.price = format_price(product.price)
-    print(product)
 
     #u1 = User("Matheus", "matheus@gmail.com")
     #u2 = User("Matheus", "matheus@gmail.com")

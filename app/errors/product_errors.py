@@ -1,14 +1,15 @@
 class ProductError(Exception):
+    """Base class for product-related errors"""
     pass
 
 class EmptyNameError(ProductError):
     pass
 
-class InvalidPriceError(Exception):
+class InvalidPriceError(ProductError):
     pass
 
-class InvalidAmountError(Exception):
+class InvalidAmountError(ProductError):
     pass
 
-class ProductNotFoundError(Exception):
+class ProductNotFoundError(ProductError):
     pass
