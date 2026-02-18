@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from app.errors.product_errors import EmptyNameError, InvalidAmountError, InvalidPriceError
 
 @dataclass
 class Product:
@@ -9,8 +10,8 @@ class Product:
 
     def __post_init__(self):
         if not self.name:
-            raise ValueError("Name cannot be empty")
-        if self.amount < 0:
-            raise ValueError("Amount cannot be negative")
-        if self.price < 0:
-            raise ValueError("Price cannot be negative")
+            raise EmptyNameError("Name cannot be empty")
+        if self.amount <= 0:
+            raise InvalidAmountError("Amount cannot be negative")
+        if self.price <= 0:
+            raise InvalidPriceError("Price cannot be negative")
