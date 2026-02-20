@@ -13,7 +13,7 @@ def main():
     
     p_service = ProductService()
     try:
-        product = p_service.create_product("Glass", "Blue glass", 10, -50)
+        product = p_service.create_product("Plate", "Ceramic plate", 27, 45)
         product.price = format_price(product.price)
         print(product)
     except ProductError as e:
