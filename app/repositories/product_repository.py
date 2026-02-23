@@ -2,15 +2,18 @@ import json
 from pathlib import Path
 from app.models.product import Product
 
-DATA_PATH = Path("data/products.json")
+#DATA_PATH = Path("data/products.json")
 
 class ProductRepository:
 
+    def __init__(self, file_path):
+        self.file_path = file_path
+
     def load_products(self) -> list[Product]:
-        if not DATA_PATH.exists():
+        if not self.file_path.exists():
             return []
 
-        with open(DATA_PATH, "r") as file:
+        with open(self.file_path, "r") as file:
             data = json.load(file)
 
         return [Product(**item) for item in data]
@@ -18,5 +21,5 @@ class ProductRepository:
     def save_products(self, products: list[Product]) -> None:
         data = [product.__dict__ for product in products]
 
-        with open(DATA_PATH, "w") as file:
+        with open(self.file_path, "w") as file:
             json.dump(data, file, indent=4)

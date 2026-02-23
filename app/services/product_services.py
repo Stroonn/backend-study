@@ -1,11 +1,12 @@
 from app.models.product import Product
 from app.utils.helpers import calculate_discount, is_positive, format_price
 from app.repositories.product_repository import ProductRepository
+from app.repositories.mocky_repository import FakeRepository
 
 class ProductService:
 
-    def __init__(self):
-        self.repository = ProductRepository()
+    def __init__(self, repository):
+        self.repository = repository
 
     def create_product(self, name, desc, amount, price):
         if not name.strip():
