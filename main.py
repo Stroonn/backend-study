@@ -1,3 +1,5 @@
+from zipfile import Path
+from app.repositories.product_repository import ProductRepository
 from app.services.user_services import UserService
 from app.services.product_services import ProductService
 from app.utils.helpers import format_price
@@ -10,7 +12,7 @@ def main():
     #u1 = service.create_user("Matheus", "matheus@gmail.com")
     #print(u1)
     #u2 =  service.create_user("Gabriela", "gabriela@gmail.com")
-    
+    repo = ProductRepository(Path("data/products.json"))
     p_service = ProductService()
     try:
         product = p_service.create_product("Plate", "Ceramic plate", 27, 45)
