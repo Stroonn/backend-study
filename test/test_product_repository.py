@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.repositories.product_repository import ProductRepository
 from app.models.product import Product
 from pathlib import Path
@@ -9,8 +11,8 @@ def test_save_and_load_products(tmp_path):
     repo = ProductRepository(file_path)
 
     products = [
-        Product("Feijao", "Preto", 10, 5.0),
-        Product("Arroz", "Branco", 20, 7.5),
+        Product(1, "Feijao", "Preto", 10, 5.0),
+        Product(2, "Arroz", "Branco", 20, 7.5),
     ]
 
     repo.save_products(products)
