@@ -1,33 +1,65 @@
 from datetime import date
 import json
+import csv
 from pathlib import Path
 from app.models.product import Product
 
 #DATA_PATH = Path("data/products.json")
 
-class ProductRepository:
+class ProductRepository_csv:
 
     def __init__(self, file_path):
         self.file_path = Path(file_path)
 
     def load_products(self) -> list[Product]:
-        self.file_path.parent.mkdir(parents=True, exist_ok=True)
-        
         if not self.file_path.exists():
             return []
 
-        with open(self.file_path, "r") as file:
-            content = file.read()
-            if not content:
-                return []
-            data = json.loads(content)
+        self.file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if self.file_path.suffix.lower() == ".csv":
+            products = []
+            with open(self.file_path, "r", newline='', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    item = {
+                        "id": int(row.get("id", 0)),
+                        "name": row.get("name", ""),
+                        "desc": row.get("desc", ""),
+                        "amount": int(row.get("amount", 0)),
+                        "price": float(row.get("price", 0)),
+                        "created_at": row.get("created_at", ""),
+                        "updated_at": row.get("updated_at", ""),
+                    }
+                    products.append(Product(**item))
+            return products
+
+        try:
+            with open(self.file_path, "r", encoding='utf-8') as file:
+                data = json.load(file)
+        except (json.JSONDecodeError, ValueError):
+            return []
 
         return [Product(**item) for item in data]
 
     def save_products(self, products: list[Product]) -> None:
+
+        # ensure parent directory exists
+        self.file_path.parent.mkdir(parents=True, exist_ok=True)
+
         data = [product.__dict__ for product in products]
 
-        with open(self.file_path, "w") as file:
+        # if target is CSV, write CSV; otherwise write JSON
+        if self.file_path.suffix.lower() == ".csv":
+            fieldnames = ["id", "name", "desc", "amount", "price", "created_at", "updated_at"]
+            with open(self.file_path, "w", newline='', encoding='utf-8') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for product in data:
+                    writer.writerow({k: product.get(k, "") for k in fieldnames})
+            return
+
+        with open(self.file_path, "w", encoding='utf-8') as file:
             json.dump(data, file, indent=4)
 
     def list_products(self) -> list[Product]:

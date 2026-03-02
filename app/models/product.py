@@ -3,10 +3,13 @@ from app.errors.product_errors import EmptyNameError, InvalidAmountError, Invali
 
 @dataclass
 class Product:
+    id : int
     name: str
     desc: str
     amount: int
     price: float
+    created_at: str
+    updated_at: str
 
     def __post_init__(self):
         if not self.name:
