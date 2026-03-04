@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class ProductCreateSchema(BaseModel):
+class ProductResponseSchema(BaseModel):
     id: int
     name: str
     desc: str
