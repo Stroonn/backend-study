@@ -47,11 +47,11 @@ def main():
             print("Digite a descrição do produto:")
             description = input()
             print("Digite a quantidade do produto:")
-            quantity = int(input())
+            amount = int(input())
             print("Digite o preço do produto:")
             price = float(input())
             try:
-                p_service.create_product(id, name, description, quantity, price)
+                p_service.create_product(id, name, description, amount, price)
             except ProductError as e:
                 print(f"Error: {e}")
         elif choice == 2:
