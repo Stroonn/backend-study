@@ -141,5 +141,7 @@ This project will continue evolving toward a production-level backend system.
 ## 👨‍💻 Author
 
 Matheus Souza
+
 Bachelor in Computer Science
+
 Backend Developer in progress 🚀
