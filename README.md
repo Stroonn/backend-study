@@ -1,56 +1,145 @@
-# backend-study
+# 🚀 Backend Study – Python API Project
 
-This is a repository contains my structured studies in Python backend development. 
+This repository documents my structured journey into backend development using Python.
 
-It is part of my journey to become a better backend developer by building real projects step by step, following good software engineering pratices.
+The project evolved from a simple CLI-based CRUD system into a RESTful API built with FastAPI, following clean architecture principles and software engineering best practices.
 
-## About
+It represents hands-on learning focused on writing production-ready backend code.
 
-This project focuses on improving my backend skills using Python.
+# 📌 Project Overview
 
-Topics covered include:
+This backend project includes:
 
-- Project structure
-- Clean code practices
-- Object-oriented programming
-- Services and models separation
-- Data validation
-- JSON persistence
-- Logging
-- Database integration (coming soon)
-- FastAPI APIs (coming soon)
+Clean architecture structure
 
-This repository is designed for people who already know basic Python and want to improve their backend development skills.
+Service and repository pattern
 
-## Tecnologies
+Data validation and business rules
 
-- Linguage: Python 3
-- Tools: VS Code, Git, GitHub
-- Future tools: FastAPI, PostgreSQL, Docker
+JSON-based persistence
 
-## Project Structure
+Unit tests with pytest
+
+REST API built with FastAPI
+
+Proper HTTP error handling
+
+Structured code organization
+
+The goal is to simulate real-world backend development practices.
+
+## 🧠 Concepts Practiced
+
+Object-Oriented Programming (OOP)
+
+Separation of concerns
+
+Dependency injection
+
+Error handling
+
+API design (REST)
+
+Pydantic schema validation
+
+Automated testing
+
+Code refactoring
+
+## 🛠 Technologies Used
+
+Python 3
+
+FastAPI
+
+Pytest
+
+JSON persistence
+
+VS Code
+
+Git & GitHub
+
+Future improvements:
+
+SQLite / PostgreSQL
+
+Docker
+
+Authentication
+
+Logging improvements
+
+## 📂 Project Structure
 
 <pre><code>backend-study/
+backend-study/
 │
 ├── app/
-│ ├── models/
-│ ├── services/
-│ ├── utils/
+│   ├── models/
+│   ├── repositories/
+│   ├── services/
+│   ├── schemas/
+│   └── utils/
 │
-├── main.py
+├── tests/
+│
+├── main.py          # CLI version
+├── main_api.py      # FastAPI version
 └── README.md</code></pre>
 
-## How to Run
+## ▶️ How to Run (CLI Version)
+python main.py
+🌐 How to Run (API Version)
 
-1. Clone the repository
-2. Run: python main.py
+Install dependencies:
 
-## Goal
+<pre><code>pip install fastapi uvicorn</code></pre>
 
-The goal of this repository is to evolve from basic Python knowledge to professional backend development.
+Run the API:
 
-New features and projects will be added as I progress in my studies.
+<pre><code>uvicorn main_api:app --reload</code></pre>
 
-## Author 
+Open in browser:
+
+<pre><code>http://127.0.0.1:8000/docs</code></pre>
+
+Swagger documentation will be available automatically.
+
+## 🧪 How to Run Tests
+
+<pre><code>pytest</code></pre>
+
+The project includes unit tests for:
+
+Product creation
+
+Validation rules
+
+Repository behavior
+
+CRUD operations
+
+## 🎯 Objective
+
+The purpose of this repository is to transition from basic Python knowledge to professional backend development skills.
+
+Each iteration improves:
+
+Code quality
+
+Architecture
+
+Test coverage
+
+API structure
+
+Engineering discipline
+
+This project will continue evolving toward a production-level backend system.
+
+## 👨‍💻 Author
 
 Matheus Souza
+Bachelor in Computer Science
+Backend Developer in progress 🚀
