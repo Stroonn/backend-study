@@ -7,10 +7,7 @@ class ProductService:
     def __init__(self, repository):
         self.repository = repository
 
-    def create_product(self,id, name, desc, amount, price):
-        if id < 0:
-            raise ValueError("ID não pode ser nulo ou negativo")
-        
+    def create_product(self, name, desc, amount, price):
         if not name.strip():
             raise ValueError("Nome obrigatório")
         
@@ -29,11 +26,12 @@ class ProductService:
         if price > 10000:
             raise ValueError("Preço muito alto")
 
-        products = self.repository.load_products()
-        new_product = Product(id, name, desc, amount, price, created_at = str(date.today()), updated_at = None)
-        products.append(new_product)
-        self.repository.save_products(products)
-        return new_product
+        return self.repository.create_product(
+                name=name,
+                desc=desc,
+                amount=amount,
+                price=price
+            )
     
     def list_products(self):
         return self.repository.list_products()
@@ -57,13 +55,13 @@ class ProductService:
     def order_by_price_descending(self):
         return self.repository.order_by_price(ascending=False)
     
-    def update_name(self, id, name):
-        if not name.strip():
-            raise ValueError("Nome obrigatório")
-        size = len(name)
-        if size < 3:
-            raise ValueError("Nome deve conter pelo mais de 3 caracteres")
-        return self.repository.update_name(id, name)
+    def update_name(self, id: int, new_name: str):
+
+        self.repository.update_name(id, new_name)
+
+        product = self.repository.find_by_id(id)
+
+        return product
     
     def update_description(self, id, desc):
         if not desc.strip():
@@ -84,5 +82,13 @@ class ProductService:
             raise ValueError("Preço muito alto")
         return self.repository.update_price(id, price)
     
-    def delete_product(self, id):
-        return self.repository.delete_product(id)
+    def delete_product(self, id: int):
+
+        product = self.repository.find_by_id(id)
+
+        if not product:
+            return None
+
+        self.repository.delete_product(id)
+
+        return True
