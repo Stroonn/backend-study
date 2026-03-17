@@ -4,21 +4,40 @@ class ProductSQLiteRepository:
     def __init__(self, connection):
         self.connection = connection
 
-    def list_products(self):
+    def _row_to_product(self, row):
+        return Product(
+            id=row[0],
+            name=row[1],
+            desc=row[2],
+            amount=row[3],
+            price=row[4]
+        )
+
+    def list_products(self, skip: int, limit: int, name=None, min_price=None):
+
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM products")
+
+        query = "SELECT * FROM products WHERE 1=1"
+        params = []
+
+        if name:
+            query += " AND name LIKE ?"
+            params.append(f"%{name}%")
+
+        if min_price:
+            query += " AND price >= ?"
+            params.append(min_price)
+
+        query += " LIMIT ? OFFSET ?"
+        params.extend([limit, skip])
+
+        cursor.execute(query, params)
 
         rows = cursor.fetchall()
 
         products = []
         for row in rows:
-            product = Product(
-                id=row[0],
-                name=row[1],
-                desc=row[2],
-                amount=row[3],
-                price=row[4]
-            )
+            product = self._row_to_product(row)
             products.append(product)
 
         return products
@@ -35,13 +54,7 @@ class ProductSQLiteRepository:
         if row is None:
             return None
 
-        return Product(
-            id=row[0],
-            name=row[1],
-            desc=row[2],
-            amount=row[3],
-            price=row[4]
-        )
+        return self._row_to_product(row)
 
     def create_product(self, name, desc, amount, price):
 
@@ -74,14 +87,10 @@ class ProductSQLiteRepository:
 
         row = cursor.fetchone()
 
-        if row:
-            return Product(
-                id=row[0],
-                name=row[1],
-                desc=row[2],
-                amount=row[3],
-                price=row[4]
-            )
+        if row is None:
+            return None
+        
+        return self._row_to_product(row)
 
     def update_name(self, id: int, new_name: str):
         cursor = self.connection.cursor()
@@ -102,4 +111,4 @@ class ProductSQLiteRepository:
         )
 
         self.connection.commit()
-        return cursor.rowcount
+        return cursor.rowcount > 0
