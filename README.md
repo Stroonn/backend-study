@@ -1,74 +1,56 @@
 # 🚀 Backend Study – Python API Project
 
-This repository documents my structured journey into backend development using Python.
+This project is part of my journey learning backend development with Python.
 
-The project evolved from a simple CLI-based CRUD system into a RESTful API built with FastAPI, following clean architecture principles and software engineering best practices.
+I started with a simple CLI CRUD application and gradually improved it into a REST API using FastAPI. Along the way, I focused on writing cleaner code and understanding how real backend systems are structured.
 
-It represents hands-on learning focused on writing production-ready backend code.
+The goal of this project is to practice and apply backend concepts in a practical way.
 
 # 📌 Project Overview
 
-This backend project includes:
+This project includes:
 
-Clean architecture structure
+- A structured backend architecture
 
-Service and repository pattern
+- Separation between services and repositories
 
-Data validation and business rules
+- Data validation and business rules
 
-JSON-based persistence
+- REST API using FastAPI
 
-Unit tests with pytest
+- Basic error handling
 
-REST API built with FastAPI
+- Automated tests with pytest
 
-Proper HTTP error handling
+I tried to follow patterns that are commonly used in real-world applications.
 
-Structured code organization
+## 🧠 What I Practiced
 
-The goal is to simulate real-world backend development practices.
+- Object-Oriented Programming (OOP)
 
-## 🧠 Concepts Practiced
+- Separation of concerns
 
-Object-Oriented Programming (OOP)
+- Dependency injection
 
-Separation of concerns
+- REST API design
 
-Dependency injection
+- Data validation with Pydantic
 
-Error handling
+- Writing and organizing tests
 
-API design (REST)
-
-Pydantic schema validation
-
-Automated testing
-
-Code refactoring
+- Refactoring code
 
 ## 🛠 Technologies Used
 
-Python 3
+- Python 3
 
-FastAPI
+- FastAPI
 
-Pytest
+- Pytest
 
-JSON persistence
+- SQLite (current version)
 
-VS Code
-
-Git & GitHub
-
-Future improvements:
-
-SQLite / PostgreSQL
-
-Docker
-
-Authentication
-
-Logging improvements
+- Git & GitHub
 
 ## 📂 Project Structure
 
@@ -76,67 +58,77 @@ Logging improvements
 backend-study/
 │
 ├── app/
+│   ├── core/
+│   ├── database/
+│   ├── errors/
 │   ├── models/
 │   ├── repositories/
-│   ├── services/
 │   ├── schemas/
-│   └── utils/
+│   └── services/
 │
 ├── tests/
 │
-├── main.py          # CLI version
-├── main_api.py      # FastAPI version
+├── main_api.py      # FastAPI application
+├── init_db.py       # Database initialization
 └── README.md</code></pre>
 
-## ▶️ How to Run (CLI Version)
-python main.py
-🌐 How to Run (API Version)
+## 🌐 How to Run the API
 
-Install dependencies:
+First, install the dependencies:
 
 <pre><code>pip install fastapi uvicorn</code></pre>
 
-Run the API:
+Then run the server:
 
 <pre><code>uvicorn main_api:app --reload</code></pre>
 
-Open in browser:
+Open your browser and go to:
 
 <pre><code>http://127.0.0.1:8000/docs</code></pre>
 
-Swagger documentation will be available automatically.
+You will see the Swagger UI where you can test the endpoints.
 
 ## 🧪 How to Run Tests
 
+To run the tests:
+
 <pre><code>pytest</code></pre>
 
-The project includes unit tests for:
+The tests cover:
 
-Product creation
+- Product creation
 
-Validation rules
+- Validation rules
 
-Repository behavior
+- API endpoints
 
-CRUD operations
+- Error cases
 
-## 🎯 Objective
+## 🎯 Purpose of This Project
 
-The purpose of this repository is to transition from basic Python knowledge to professional backend development skills.
+The main goal is to improve my backend development skills step by step.
 
-Each iteration improves:
+In this project, I focus on:
 
-Code quality
+Writing cleaner and more organized code
 
-Architecture
+Understanding backend architecture
 
-Test coverage
+Practicing real-world patterns
 
-API structure
+Improving testing and reliability
 
-Engineering discipline
+I plan to keep improving this project over time.
 
-This project will continue evolving toward a production-level backend system.
+## 🔮 Future Improvements
+
+- Add authentication
+
+- Use PostgreSQL
+
+- Docker support
+
+- Improve logging
 
 ## 👨‍💻 Author
 
