@@ -1,15 +1,49 @@
-from app.repositories.mocky_repository import FakeRepository
-from app.services.product_services import ProductService
+import pytest
+from conftest import client
 
-def test_list_products():
-    repo = FakeRepository()
-    service = ProductService(repo)
+def test_list_products(client):
 
-    service.create_product(1,"Arroz", "Branco", 20, 10)
-    service.create_product(2,"Feijao", "Preto", 10, 5)
+    response = client.get("/products")
 
-    products = service.list_products()
-    assert len(products) == 2
-    assert products[0].name == "Arroz"
-    assert products[1].name == "Feijao"
-    
+    assert response.status_code == 200
+
+def test_create_product(client):
+    response = client.post(
+        "/products",
+        json={
+            "name": "Feijao",
+            "desc": "Preto",
+            "amount": 10,
+            "price": 5.5
+        }
+    )
+
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["name"] == "Feijao"
+    assert data["price"] == 5.5
+
+def test_find_by_name(client, product):
+
+    response = client.get(f"/products/{product['name']}")
+
+    assert response.status_code == 200
+    assert response.json()["name"] == "Feijao"
+
+def test_update_name(client, product):
+
+    response = client.put(
+        f"/products/{product['id']}",
+        params={"new_name": "Feijao do Sul"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["name"] == "Feijao do Sul"
+
+def test_delete_product(client, product):
+
+    response = client.delete(f"/products/{product['id']}")
+
+    assert response.status_code == 200
+
