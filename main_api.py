@@ -1,17 +1,36 @@
-from fastapi import FastAPI,HTTPException, Depends
-from pathlib import Path
+from fastapi import FastAPI,HTTPException, Depends, Request
 from app.models.product import Product
-from app.repositories.product_repository import ProductRepository
 from app.services.product_services import ProductService
 from app.schemas.product_schema import ProductResponseSchema, ProductCreateSchema
 import sqlite3
 from app.repositories.product_sql_repository import ProductSQLiteRepository
-
+from app.database.database import get_connection, create_tables
+import time
+from app.core.logger import logger
+from app.schemas.api_response import ApiResponse
 
 app = FastAPI()
 
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+
+    start_time = time.time()
+
+    response = await call_next(request)
+
+    process_time = (time.time() - start_time) * 1000
+
+    logger.info(
+        f"{request.method} {request.url.path} | "
+        f"Status: {response.status_code} | "
+        f"{process_time:.2f}ms"
+    )
+
+    return response
+
 def get_service():
-    connection = sqlite3.connect("database.db", check_same_thread=False)
+    connection = get_connection()
+    create_tables(connection)
     repo = ProductSQLiteRepository(connection)
     return ProductService(repo)
 
@@ -27,9 +46,28 @@ def create_product(payload: ProductCreateSchema,service: ProductService = Depend
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@app.get("/products", response_model=list[ProductResponseSchema])
-def list_products(service: ProductService = Depends(get_service)):
-    return service.list_products()
+from fastapi import Query
+
+@app.get("/products")
+def list_products(
+    skip: int = 0,
+    limit: int = 10,
+    name: str | None = None,
+    min_price: float | None = None,
+    service: ProductService = Depends(get_service)
+    ):
+
+    products = service.list_products(skip, limit, name, min_price)
+
+    return {
+        "success": True,
+        "data": products,
+        "pagination": {
+            "skip": skip,
+            "limit": limit,
+            "returned": len(products)
+        }
+    }
 
 @app.get("/products/{name}", response_model=ProductResponseSchema)
 def find_by_name(name: str, service: ProductService = Depends(get_service)):
