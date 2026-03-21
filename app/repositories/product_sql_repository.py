@@ -6,11 +6,11 @@ class ProductSQLiteRepository:
 
     def _row_to_product(self, row):
         return Product(
-            id=row[0],
-            name=row[1],
-            desc=row[2],
-            amount=row[3],
-            price=row[4]
+            id=row["id"],
+            name=row["name"],
+            desc=row["desc"],
+            amount=row["amount"],
+            price=row["price"]
         )
 
     def list_products(self, skip: int, limit: int, name=None, min_price=None):
@@ -24,7 +24,7 @@ class ProductSQLiteRepository:
             query += " AND name LIKE ?"
             params.append(f"%{name}%")
 
-        if min_price:
+        if min_price is not None:
             query += " AND price >= ?"
             params.append(min_price)
 
@@ -35,12 +35,7 @@ class ProductSQLiteRepository:
 
         rows = cursor.fetchall()
 
-        products = []
-        for row in rows:
-            product = self._row_to_product(row)
-            products.append(product)
-
-        return products
+        return [self._row_to_product(row) for row in rows]
 
     def find_by_name(self, product_name):
         cursor = self.connection.cursor()
@@ -87,10 +82,7 @@ class ProductSQLiteRepository:
 
         row = cursor.fetchone()
 
-        if row is None:
-            return None
-        
-        return self._row_to_product(row)
+        return self._row_to_product(row) if row else None
 
     def update_name(self, id: int, new_name: str):
         cursor = self.connection.cursor()
@@ -101,6 +93,7 @@ class ProductSQLiteRepository:
         )
 
         self.connection.commit()
+        return cursor.rowcount > 0
 
     def delete_product(self, product_id):
         cursor = self.connection.cursor()
