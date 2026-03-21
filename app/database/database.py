@@ -6,10 +6,10 @@ def create_tables(connection):
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
+        name TEXT NOT NULL,
         desc TEXT,
-        amount INTEGER,
-        price REAL
+        amount INTEGER NOT NULL,
+        price REAL NOT NULL
     )
     """)
 
