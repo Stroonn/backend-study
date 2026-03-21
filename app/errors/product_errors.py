@@ -12,4 +12,5 @@ class InvalidAmountError(ProductError):
     pass
 
 class ProductNotFoundError(ProductError):
-    pass
+    def __init__(self, message="Product not found"):
+        super().__init__(message)
