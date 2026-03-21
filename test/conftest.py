@@ -3,7 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 from main_api import app, get_service
 from app.repositories.product_sql_repository import ProductSQLiteRepository
-from app.services.product_services import ProductService
+from app.services.product_service import ProductService
 
 @pytest.fixture
 def client():

@@ -12,27 +12,27 @@ class ProductService:
 
         if not name.strip():
             logger.warning("Product creation failed: empty name")
-            raise ValueError("Nome obrigatório")
+            raise ValueError("Name can't be empty")
             
         if len(name) < 3:
             logger.warning("Product creation failed: name too short")
-            raise ValueError("Nome deve conter pelo mais de 3 caracteres")
+            raise ValueError("Name must be at least 3 characters long")
 
         if amount <= 0:
             logger.warning("Product creation failed: invalid amount")
-            raise ValueError("Quantidade deve ser positiva")
+            raise ValueError("Amount must be positive")
             
         if amount > 1000:
             logger.warning("Product creation failed: amount too high")
-            raise ValueError("Quantidade muito alta")
+            raise ValueError("Amount too high")
 
         if price <= 0:
             logger.warning("Product creation failed: invalid price")
-            raise ValueError("Preço deve ser positivo")
+            raise ValueError("Price must be positive")
             
         if price > 10000:
             logger.warning("Product creation failed: price too high")
-            raise ValueError("Preço muito alto")
+            raise ValueError("Price too high")
 
         product = self.repository.create_product(
             name=name,
@@ -72,32 +72,26 @@ class ProductService:
     
     def update_description(self, id, desc):
         if not desc.strip():
-            raise ValueError("Descrição obrigatória")
+            raise ValueError("Description necessary")
         return self.repository.update_desc(id, desc)
     
     def update_amount(self, id, amount):
         if amount <= 0:
-            raise ValueError("Quantidade deve ser positiva")
+            raise ValueError("Amount must be positive")
         elif amount > 1000:
-            raise ValueError("Quantidade muito alta")
+            raise ValueError("Amount too high")
         return self.repository.update_amount(id, amount)
 
     def update_price(self, id, price):
         if price <= 0:
-            raise ValueError("Preço inválido")
+            raise ValueError("Wrong price")
         elif price > 10000:
-            raise ValueError("Preço muito alto")
+            raise ValueError("Price too high")
         return self.repository.update_price(id, price)
     
     def delete_product(self, id: int):
 
         logger.info(f"Attempting to delete product id={id}")
-
-        product = self.repository.find_by_id(id)
-
-        if not product:
-            logger.warning(f"Delete failed: product id={id} not found")
-            return None
 
         deleted = self.repository.delete_product(id)
         if not deleted:
