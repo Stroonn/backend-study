@@ -1,6 +1,6 @@
 from fastapi import FastAPI,HTTPException, Depends, Request
 from app.models.product import Product
-from app.services.product_services import ProductService
+from app.services.product_service import ProductService
 from app.schemas.product_schema import ProductResponseSchema, ProductCreateSchema
 import sqlite3
 from app.repositories.product_sql_repository import ProductSQLiteRepository
@@ -8,6 +8,8 @@ from app.database.database import get_connection, create_tables
 import time
 from app.core.logger import logger
 from app.schemas.api_response import ApiResponse
+from fastapi import Query
+from app.errors.product_errors import ProductError
 
 app = FastAPI()
 
@@ -34,7 +36,7 @@ def get_service():
     repo = ProductSQLiteRepository(connection)
     return ProductService(repo)
 
-@app.post("/products", response_model=ProductResponseSchema)
+@app.post("/products", status_code=201, response_model=ProductResponseSchema)
 def create_product(payload: ProductCreateSchema,service: ProductService = Depends(get_service)):
     try:
         return service.create_product(
@@ -43,10 +45,8 @@ def create_product(payload: ProductCreateSchema,service: ProductService = Depend
             amount=payload.amount,
             price=payload.price
         )
-    except Exception as e:
+    except ProductError as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-from fastapi import Query
 
 @app.get("/products")
 def list_products(
@@ -59,15 +59,15 @@ def list_products(
 
     products = service.list_products(skip, limit, name, min_price)
 
-    return {
-        "success": True,
-        "data": products,
-        "pagination": {
+    return ApiResponse(
+        success=True,
+        data=products,
+        pagination={
             "skip": skip,
             "limit": limit,
             "returned": len(products)
         }
-    }
+    )
 
 @app.get("/products/{name}", response_model=ProductResponseSchema)
 def find_by_name(name: str, service: ProductService = Depends(get_service)):
