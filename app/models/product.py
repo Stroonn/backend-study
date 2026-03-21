@@ -8,11 +8,3 @@ class Product:
     desc: str
     amount: int
     price: float
-
-    def __post_init__(self):
-        if not self.name:
-            raise EmptyNameError("Name cannot be empty")
-        if self.amount <= 0:
-            raise InvalidAmountError("Amount must be positive")
-        if self.price < 0:
-            raise InvalidPriceError("Price cannot be negative")
